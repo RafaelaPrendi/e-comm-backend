@@ -22,8 +22,11 @@ app.listen(process.env.PORT, () => {
 //routes
 const authRoutes = require("./routes/auth/auth.route");
 const adminAuthRoutes = require("./routes/auth/admin/auth.route");
+const categoryRoutes = require("./routes/category/category");
+
 app.use("/api", adminAuthRoutes);
 app.use("/api", authRoutes);
+app.use("/api", categoryRoutes);
 app.get("/hello", (req, res) => {
   res.status(200).json({
     message: "Hello from backend server!",
