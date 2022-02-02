@@ -2,6 +2,10 @@ const express = require("express");
 const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
 exports.signup = (req, res) => {
+  if(Object.keys(req.body).length === 0) {
+    return res.status(404).json({
+    message: "No Data sent!",
+  });}
   User.findOne({ email: req.body.email }).exec((error, user) => {
     if (user)
       return res.status(400).json({
@@ -33,6 +37,10 @@ exports.signup = (req, res) => {
   });
 };
 exports.signin = (req, res) => {
+  if(Object.keys(req.body).length === 0) {
+    return res.status(404).json({
+    message: "No Data sent!",
+  });}
   User.findOne({ email: req.body.email }).exec((error, user) => {
     if (error) return res.status(400).json({ message: error });
     if (!user) {
@@ -42,7 +50,7 @@ exports.signin = (req, res) => {
     } else {
       if (user.authenticate(req.body.password) && user.role === "user") {
         //return token to manage user session
-        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
         const { _id, firstName, lastName, email, role, fullname } = user;

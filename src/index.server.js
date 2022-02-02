@@ -11,7 +11,7 @@ connectToDb();
 
 const app = express();
 // parse application/x-www-form-urlencoded
-app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.urlencoded({ extended: false}));
 
 // parse application/json
 app.use(bodyparser.json());
@@ -20,13 +20,18 @@ app.listen(process.env.PORT, () => {
   console.log(`server running on ${process.env.PORT}`);
 });
 //routes
-const authRoutes = require("./routes/auth/auth.route");
-const adminAuthRoutes = require("./routes/auth/admin/auth.route");
+const authRoutes = require("./routes/auth/authRoute");
+const adminAuthRoutes = require("./routes/auth/admin/authRoute");
 const categoryRoutes = require("./routes/category/category");
+const productRoutes = require("./routes/product/product");
+const cartRoutes = require("./routes/cart/cart");
 
-app.use("/api", adminAuthRoutes);
+app.use("/api/admin", adminAuthRoutes);
 app.use("/api", authRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
+app.use("/api", cartRoutes);
+
 app.get("/hello", (req, res) => {
   res.status(200).json({
     message: "Hello from backend server!",

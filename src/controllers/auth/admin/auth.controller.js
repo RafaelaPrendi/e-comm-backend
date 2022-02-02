@@ -2,13 +2,19 @@ const User = require("../../../models/User");
 const jwt = require("jsonwebtoken");
 
 exports.signup = (req, res) => {
+  if(Object.keys(req.body).length === 0) {
+    return res.status(404).json({
+    message: "No Data sent!",
+  });}
   User.findOne({ email: req.body.email }).exec((error, user) => {
     if (user)
       return res.status(400).json({
         message: "Admin already registered!",
       });
   });
+ 
   const { firstName, lastName, username, email, password } = req.body;
+  
   const _user = new User({
     firstName,
     lastName,
@@ -32,6 +38,9 @@ exports.signup = (req, res) => {
   });
 };
 exports.signin = (req, res) => {
+  if(Object.keys(req.body).length === 0) return res.status(404).json({
+    message: "No Data sent!",
+  });
   User.findOne({ email: req.body.email }).exec((error, user) => {
     if (error) return res.status(400).json({ message: error });
     if (!user) {
