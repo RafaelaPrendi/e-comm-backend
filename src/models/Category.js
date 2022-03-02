@@ -3,6 +3,7 @@ const categorySchema = new mongoose.Schema(
   {
     name: { type: String, require: true, trim: true },
     slug: { type: String, require: true, unique: true },
+    categoryImage: { type: String },
     //for sub categories
     parentId: {
       type: String,
