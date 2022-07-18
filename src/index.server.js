@@ -4,7 +4,7 @@ const bodyparser = require("body-parser");
 const connectToDb = require("./db");
 const path = require("path");
 const cors = require("cors");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 
 //environment variables
 env.config();
@@ -14,14 +14,18 @@ connectToDb();
 
 const app = express();
 // parse application/x-www-form-urlencoded
-app.use(bodyparser.urlencoded({ extended: false}));
+app.use(bodyparser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyparser.json());
 app.use(cookieParser());
 
-app.use(cors());
-
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:4000",
+  })
+);
 
 app.listen(process.env.PORT, () => {
   console.log(`server running on ${process.env.PORT}`);
@@ -33,7 +37,7 @@ const categoryRoutes = require("./routes/category/category");
 const productRoutes = require("./routes/product/product");
 const cartRoutes = require("./routes/cart/cart");
 
-app.use('/public', express.static(path.join(__dirname, "uploads")));
+app.use("/public", express.static(path.join(__dirname, "uploads")));
 app.use("/api/admin", adminAuthRoutes);
 app.use("/api", authRoutes);
 app.use("/api", categoryRoutes);

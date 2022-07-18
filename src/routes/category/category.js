@@ -4,8 +4,10 @@ const {
   addCategory,
   getCategories,
   getCategory,
+  editCategory,
+  deleteCategory,
+  getCategoriesPaginate,
 } = require("../../controllers/category/category.controller");
-const Category = require("../../models/Category");
 const multer = require("multer");
 const shortid = require("shortid");
 const path = require("path");
@@ -26,6 +28,19 @@ router.post(
   adminMiddleware,
   upload.single("categoryImage"),
   addCategory
+);
+router.put(
+  "/category/edit",
+  requireSignin,
+  adminMiddleware,
+  upload.single("categoryImage"),
+  editCategory
+);
+router.delete(
+  "/category/delete/:categoryID",
+  requireSignin,
+  adminMiddleware,
+  deleteCategory
 );
 router.get("/category/getCategories", getCategories);
 router.get("/category/getCategory/:categoryID", getCategory);

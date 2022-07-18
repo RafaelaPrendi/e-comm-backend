@@ -5,15 +5,15 @@ const {
   validateSignInRequest,
   isRequestValidated,
 } = require("../../../validators/auth.validator");
-const { requireSignin } = require('../../../common-middleware/index');
+const { requireSignin } = require("../../../common-middleware/index");
 const {
   signup,
   signin,
-  signout
+  signout,
 } = require("../../../controllers/auth/admin/auth.controller");
 
 router.post("/signin", validateSignInRequest, isRequestValidated, signin);
 router.post("/signup", validateSignUpRequest, isRequestValidated, signup);
-router.post("/signout", requireSignin, signout);
+router.post("/signout", signout);
 
 module.exports = router;

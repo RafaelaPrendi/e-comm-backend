@@ -2,19 +2,20 @@ const User = require("../../../models/User");
 const jwt = require("jsonwebtoken");
 
 exports.signup = (req, res) => {
-  if(Object.keys(req.body).length === 0) {
+  if (Object.keys(req.body).length === 0) {
     return res.status(404).json({
-    message: "No Data sent!",
-  });}
+      message: "No Data sent!",
+    });
+  }
   User.findOne({ email: req.body.email }).exec((error, user) => {
     if (user)
       return res.status(400).json({
         message: "Admin already registered!",
       });
   });
- 
+
   const { firstName, lastName, username, email, password } = req.body;
-  
+
   const _user = new User({
     firstName,
     lastName,
@@ -38,9 +39,10 @@ exports.signup = (req, res) => {
   });
 };
 exports.signin = (req, res) => {
-  if(Object.keys(req.body).length === 0) return res.status(404).json({
-    message: "No Data sent!",
-  });
+  if (Object.keys(req.body).length === 0)
+    return res.status(404).json({
+      message: "No Data sent!",
+    });
   User.findOne({ email: req.body.email }).exec((error, user) => {
     if (error) return res.status(400).json({ message: error });
     if (!user) {
@@ -58,8 +60,8 @@ exports.signin = (req, res) => {
           }
         );
         const { _id, firstName, lastName, email, role, fullname } = user;
-         res.cookie('token', token, { expiresIn: '1h'});
-         console.log('Cookie have been saved successfully');
+        res.cookie("token", token, { expiresIn: "1h", httpOnly: true });
+        console.log("Cookie have been saved successfully");
         res.status(200).json({
           token,
           user: {
@@ -81,7 +83,7 @@ exports.signin = (req, res) => {
 };
 exports.signout = (req, res) => {
   res.clearCookie("token");
-   return res.status(200).json({
-    message: "Signout successful!"
+  return res.status(200).json({
+    message: "Signout successful!",
   });
-}
+};
