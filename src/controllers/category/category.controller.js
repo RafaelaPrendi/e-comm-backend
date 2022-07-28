@@ -30,29 +30,32 @@ exports.getCategories = (req, res) => {
     }
   });
 };
-// exports.getCategoriesPaginate = (req, res) => {
-//   const pageNo = req.params.page; // parseInt(req.query.pageNo)
-//   const size = req.params.perPage;
-//   const query = {};
-//   if (pageNo < 0 || pageNo === 0) {
-//     response = {
-//       error: true,
-//       message: "invalid page number, should start with 1",
-//     };
-//     return res.json(response);
-//   }
-//   query.skip = size * (pageNo - 1);
-//   query.limit = size;
-//   console.log(pageNo, size, "req");
-//   Category.find({}, {}, query, function (error, categories) {
-//     if (error) return res.status(400).json({ error });
-//     if (categories) {
-//       const categoryList = createCategories(categories);
-//       console.log(categories, "CATEGORIES");
-//       return res.status(200).json({ categoryList });
-//     }
-//   });
-// };
+exports.getCategoriesPaginate = (req, res) => {
+  const pageNo = parseInt(req.params.page); // parseInt(req.query.pageNo)
+  const size = parseInt(req.params.perPage);
+  const query = {};
+  if (pageNo < 0 || pageNo === 0) {
+    response = {
+      error: true,
+      message: "invalid page number, should start with 1",
+    };
+    return res.json(response);
+  }
+  query.skip = size * (pageNo - 1);
+  query.limit = size;
+
+  Category.find({},{}, query).exec((error, categories) =>{
+    if (error) {
+      console.log(error, "ERROR")
+      return res.status(400).json({ error });
+    }
+    if (categories) {
+      const categoryList = createCategories(categories);
+      console.log(categoryList, "CATEGORIES list");
+      return res.status(200).json({ categoryList });
+    }
+  });
+};
 exports.getCategory = (req, res) => {
   const categoryId = req.params.categoryID;
   if (categoryId)

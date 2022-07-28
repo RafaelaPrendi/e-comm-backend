@@ -43,6 +43,7 @@ router.delete(
   deleteCategory
 );
 router.get("/category/getCategories", getCategories);
+router.get("/category/getCategories/:page/:perPage", getCategoriesPaginate);
 router.get("/category/getCategory/:categoryID", getCategory);
 
 module.exports = router;
