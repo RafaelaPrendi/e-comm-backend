@@ -43,15 +43,15 @@ exports.getCategoriesPaginate = (req, res) => {
   }
   query.skip = size * (pageNo - 1);
   query.limit = size;
-
+console.log("QUERY", query)
   Category.find({},{}, query).exec((error, categories) =>{
     if (error) {
       console.log(error, "ERROR")
       return res.status(400).json({ error });
     }
     if (categories) {
-      const categoryList = createCategories(categories);
-      console.log(categoryList, "CATEGORIES list");
+      const categoryList = categories;
+      console.log("CATEGORIES list", categories, "WHYYY");
       return res.status(200).json({ categoryList });
     }
   });
